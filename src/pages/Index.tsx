@@ -497,6 +497,7 @@ const data = deepMerge(t[lang], t.en);
       <HeroSection data={data} lang={lang} isDark={isDark} />
       <AboutSection data={data} lang={lang} />
       <RetroGridDemo isDark={isDark} lang={lang}  />
+      <AssistantSection data={data} lang={lang}/>
       <TextRevealComponent lang={lang} />
       <ServicesSection data={data} lang={lang} />
       
@@ -504,7 +505,7 @@ const data = deepMerge(t[lang], t.en);
 
           
           <WeAreTheBest lang={lang} />
-      <AssistantSection data={data} lang={lang}/>
+      
       <TestimonialsSection
         lang={lang}
       />

@@ -9,8 +9,8 @@ interface AssistantSectionProps {
 }
 
 const ar = {
-  heading: <><span className="text-mint">اشترى أي باقة للمواقع من سارة</span><br />واحصل على <span className="text-mint">25% خصم</span></>,
-  desc: 'اغتنم الفرصة الآن! احصل على خصم 25% عند شرائك لأي باقة من باقات تصميم المواقع عبر سارة مساعدتنا الذكية. استمتع بتجربة احترافية ودعم كامل في كل خطوة.',
+  heading: <><span className="text-mint">اشترى أي باقة للمواقع من سارة</span><br />واحصل على <span className="text-mint">15% خصم</span></>,
+  desc: 'اغتنم الفرصة الآن! احصل على خصم 15% عند شرائك لأي باقة من باقات تصميم المواقع عبر سارة مساعدتنا الذكية. استمتع بتجربة احترافية ودعم كامل في كل خطوة.',
   features: [
     {
       title: 'توصيات ذكية',
@@ -18,7 +18,7 @@ const ar = {
     },
     {
       title: 'شراء فوري',
-      desc: 'جرب تشتري من سارة واحصل علي خصم 25%'
+      desc: 'جرب تشتري من سارة واحصل علي خصم 15%'
     },
     {
       title: 'دعم فوري',
@@ -31,8 +31,8 @@ const ar = {
 };
 
 const en = {
-  heading: <><span className="text-mint">Buy any website package from Sara</span><br />and get <span className="text-mint">25% off</span></>,
-  desc: 'Take advantage now! Get 25% off when you purchase any website design package through Sara, our smart assistant. Enjoy a professional experience and full support every step of the way.',
+  heading: <><span className="text-mint">Buy any website package from Sara</span><br />and get <span className="text-mint">15% off</span></>,
+  desc: 'Take advantage now! Get 15% off when you purchase any website design package through Sara, our smart assistant. Enjoy a professional experience and full support every step of the way.',
   features: [
     {
       title: 'Smart Recommendations',
@@ -40,7 +40,7 @@ const en = {
     },
     {
       title: 'Instant Purchase',
-      desc: 'Try buying from Sara and get 25% off.'
+      desc: 'Try buying from Sara and get 15% off.'
     },
     {
       title: 'Instant Support',
