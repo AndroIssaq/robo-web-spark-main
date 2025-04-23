@@ -3,18 +3,18 @@ import { useEffect, useRef, useState } from "react";
 import Title from "@/components/App Components/Title";
 
 // Import images
-import concept from '@/assets/concept1 (1).jpg';
-import concept2 from '@/assets/concept2.jpg';
-import concept3 from '@/assets/concept3.jpg';
-import concept4 from '@/assets/concept4.jpeg';
-import design from '@/assets/design (1).jpg';
-import design2 from '@/assets/design (2).jpg';
-import design3 from '@/assets/design (3).jpg';
-import design4 from '@/assets/Designer (30).jpeg';
-import develop from '@/assets/develop (1).jpg';
-import develop2 from '@/assets/develop (2).jpg';
-import develop3 from '@/assets/develop (3).jpg';
-import develop4 from '@/assets/develop (4).jpg';
+import concept from '../../../public/lovable-uploads/develop (3).jpg';
+import concept2 from '../../../public/lovable-uploads/concept2.jpg';
+import concept3 from '../../../public/lovable-uploads/concept3.jpg';
+import concept4 from '../../../public/lovable-uploads/concept4.jpeg';
+import design from '../../../public/lovable-uploads/design (1).jpg';
+import design2 from '../../../public/lovable-uploads/design (2).jpg';
+import design3 from '../../../public/lovable-uploads/design (3).jpg';
+import design4 from '../../../public/lovable-uploads/Designer (30).jpeg';
+import develop from '../../../public/lovable-uploads/develop (1).jpg';
+import develop2 from '../../../public/lovable-uploads/develop (2).jpg';
+import develop3 from '../../../public/lovable-uploads/develop (3).jpg';
+import develop4 from '../../../public/lovable-uploads/develop (4).jpg';
 import { WayOfWork } from "../ui/WayOfWork";
 // TODO: Replace this with your actual language state or context
 const currentLang = typeof window !== 'undefined' && document.documentElement.lang === 'ar' ? 'ar' : 'en';

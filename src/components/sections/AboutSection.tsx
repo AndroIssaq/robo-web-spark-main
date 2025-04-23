@@ -3,9 +3,10 @@ import CEOImage from "../../CEO.jpg";
 
 interface AboutSectionProps {
   data: any;
+  lang: string;
 }
 
-const AboutSection = ({ data }: AboutSectionProps) => {
+const AboutSection = ({ data, lang }: AboutSectionProps) => {
   return (
     <motion.section 
       initial="hidden"
@@ -27,19 +28,19 @@ const AboutSection = ({ data }: AboutSectionProps) => {
           variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0, transition: { duration: 0.6 } } }}
           className="text-2xl md:text-3xl font-bold mb-1 text-gray-800 dark:text-white"
         >
-          {data.about.heading}
+          {lang === "ar" ? data?.ar?.about?.heading : data?.about?.heading}
         </motion.h2>
         <motion.p 
           variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0, transition: { duration: 0.6 } } }}
           className="text-gray-600 dark:text-mint-dark mb-4"
         >
-          {data.about.desc}
+          {lang === "ar" ? data?.ar?.about?.desc : data?.about?.desc}
         </motion.p>
         <motion.div 
           variants={{ hidden: { opacity: 0 }, visible: { opacity: 1, transition: { staggerChildren: 0.2 } } }}
           className="flex gap-3 flex-wrap text-xs"
         >
-          {data.about.keywords.map((k: string, i: number) => (
+          {(lang === "ar" ? data?.ar?.about?.keywords : data?.about?.keywords)?.map((k: string, i: number) => (
             <motion.span 
               key={i} 
               variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0, transition: { duration: 0.6 } } }}
@@ -59,7 +60,7 @@ const AboutSection = ({ data }: AboutSectionProps) => {
         <motion.img 
           variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0, transition: { duration: 0.6 } } }}
           src={CEOImage }
-          alt={data.about.ceo.name}
+          alt={lang === "ar" ? data?.ar?.about?.ceo?.name : data?.about?.ceo?.name}
           loading="lazy"
           className="w-60 h-80 object-cover rounded-xl border-4 border-mint/40 shadow-xl" 
         />
@@ -71,13 +72,13 @@ const AboutSection = ({ data }: AboutSectionProps) => {
             variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0, transition: { duration: 0.6 } } }}
             className="text-xl font-bold text-mint"
           >
-            {data.about.ceo.role}
+            {lang === "ar" ? data?.ar?.about?.ceo?.role : data?.about?.ceo?.role}
           </motion.h3>
           <motion.p 
             variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0, transition: { duration: 0.6 } } }}
             className="text-gray-700 dark:text-white/90 text-base mt-3 font-light italic"
           >
-            "{data.about.ceo.quote}"
+            "{lang === "ar" ? data?.ar?.about?.ceo?.quote : data?.about?.ceo?.quote}"
           </motion.p>
         </motion.div>
       </motion.div>

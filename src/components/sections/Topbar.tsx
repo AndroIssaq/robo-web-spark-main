@@ -20,12 +20,14 @@ const Topbar = ({ isDark, setIsDark, lang, setLang, data }: TopbarProps) => {
   const [drawerOpen, setDrawerOpen] = React.useState(false);
 
   const navLinks = [
-    { href: "#hero", label: data?.nav?.home },
-    { href: "#about", label: data?.nav?.about },
-    { href: "#services", label: data?.nav?.services },
-    { href: "#assistant", label: data?.nav?.assistant },
-    { href: "#contact", label: data?.nav?.contact },
+    { href: "#hero", label: lang==="en" ? data?.nav?.home : data?.ar?.nav?.home },
+    { href: "#about", label: lang==="en" ? data?.nav?.about : data?.ar?.nav?.about    },
+    { href: "#services", label:  lang==="en" ? data?.nav?.services : data?.ar?.nav?.services   },
+    { href: "#assistant", label: lang==="en" ? data?.nav?.assistant : data?.ar?.nav?.assistant  },
+    { href: "#contact", label: lang==="en" ? data?.nav?.contact : data?.ar?.nav?.contact },
   ];
+
+  
 
   return (
     <motion.header

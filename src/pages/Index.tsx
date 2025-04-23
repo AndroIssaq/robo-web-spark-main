@@ -453,68 +453,63 @@ const Index = () => {
   const [lang, setLang] = useLanguage();
   console.log(lang);
   const dir = lang === "ar" ? "rtl" : "ltr";
-  const data = t[lang];
+  // Utility function for deep merging two objects
+function deepMerge(target: any, source: any): any {
+  // Prefer target if it is a primitive (string, number, boolean) and is not undefined/null
+  if (
+    (typeof target !== 'object' || target === null) && target !== undefined && target !== null
+  ) {
+    return target;
+  }
+  // If either value is a React element, return target if defined, else source
+  if (
+    (typeof target === 'object' && target !== null && '$$typeof' in target) ||
+    (typeof source === 'object' && source !== null && '$$typeof' in source)
+  ) {
+    return target !== undefined ? target : source;
+  }
+  // If either is an array, always use target if defined, else source
+  if (Array.isArray(target) || Array.isArray(source)) {
+    return Array.isArray(target) ? target : source;
+  }
+  if (typeof target !== 'object' || target === null) return source;
+  if (typeof source !== 'object' || source === null) return target;
+  const merged = { ...source, ...target };
+  for (const key in source) {
+    if (source.hasOwnProperty(key)) {
+      if (key in target) {
+        merged[key] = deepMerge(target[key], source[key]);
+      } else {
+        merged[key] = source[key];
+      }
+    }
+  }
+  return merged;
+}
+
+
+
+const data = deepMerge(t[lang], t.en);
 
   return (
     <div className={`${isDark ? "dark" : ""} min-h-screen bg-white dark:bg-black text-gray-800 dark:text-mint font-orbitron`} dir={dir} lang={lang}>
       <Topbar isDark={isDark} setIsDark={setIsDark} lang={lang} setLang={setLang} data={data} />
-      <HeroSection data={data ?? { hero: { badge: '', title: '', desc: '', talk: '' } }} lang={lang} isDark={isDark} />
-      <AboutSection data={data ?? { about: { heading: '', desc: '', keywords: [], ceo: { role: '', quote: '' } } }} />
+      <HeroSection data={data} lang={lang} isDark={isDark} />
+      <AboutSection data={data} lang={lang} />
       <RetroGridDemo isDark={isDark} lang={lang}  />
       <TextRevealComponent lang={lang} />
-      <ServicesSection data={data ?? { services: { heading: '', desc: '', list: [] } }} />
+      <ServicesSection data={data} lang={lang} />
       
-      {/* How We Work Section */}
-      <section className="w-full bg-white dark:bg-neutral-950 font-sans md:px-10 py-20">
-        <Title title={data?.howWeWork?.heading} des={data?.howWeWork?.desc} />
-        <div className="relative max-w-7xl mx-auto pb-20">
-          {data?.howWeWork?.steps.map((step, index) => (
-            <motion.div
-              key={index}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: index * 0.2 }}
-              className="flex justify-start pt-10 md:pt-40 md:gap-10"
-            >
-              <div className="sticky flex flex-col md:flex-row z-40 items-center top-40 self-start max-w-xs lg:max-w-sm md:w-full">
-                <div className="h-10 absolute left-3 md:left-3 w-10 rounded-full bg-white dark:bg-black flex items-center justify-center">
-                  <div className="h-4 w-4 rounded-full bg-mint border border-mint p-2" />
-                </div>
-                <h3 className="hidden md:block text-xl md:pl-20 md:text-5xl font-bold text-mint">
-                  {step.title}
-                </h3>
-              </div>
+      
 
-              <div className="relative pl-20 pr-4 md:pl-4 w-full">
-                <h3 className="md:hidden block text-2xl mb-4 text-left font-bold text-mint">
-                  {step.title}
-                </h3>
-                <p className="text-black dark:text-white text-xs md:text-sm font-normal mb-8">
-                  {step.content}
-                </p>
-              </div>
-            </motion.div>
-          ))}
-
-          <div className="absolute md:left-8 left-8 top-0 overflow-hidden w-[2px] bg-[linear-gradient(to_bottom,var(--tw-gradient-stops))] from-transparent from-[0%] via-mint-600 dark:via-mint to-transparent to-[99%] [mask-image:linear-gradient(to_bottom,transparent_0%,black_10%,black_90%,transparent_100%)]">
-            <motion.div
-              className="absolute inset-x-0 top-0 w-[2px] bg-gradient-to-t from-mint-600 dark:from-mint via-mint-600 dark:via-mint to-transparent from-[0%] via-[10%] rounded-full"
-              initial={{ height: 0 }}
-              whileInView={{ height: "100%" }}
-              viewport={{ once: true }}
-              transition={{ duration: 1, delay: 0.2 }}
-            />
-          </div>
-        </div>
-      </section>
+          
           <WeAreTheBest lang={lang} />
       <AssistantSection data={data} lang={lang}/>
       <TestimonialsSection
         lang={lang}
       />
-      <ContactSection data={data ?? { contact: { heading: '', desc: '', name: '', email: '', message: '', send: '' } }} dir={dir} />
-      <Footer data={data ?? { footer: { copyright: '', right: '', credit: '' } }} />
+      <ContactSection data={data} dir={dir} lang={lang} />
+      <Footer data={data} />
     </div>
   );
 };

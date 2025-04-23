@@ -7,6 +7,7 @@ import { useTheme } from "next-themes"
 
 interface HeroSectionProps {
   data: {
+    ar: any
     hero: {
       badge: string;
       title: ReactElement;
@@ -69,7 +70,7 @@ const HeroSection = ({ data, lang, isDark }: HeroSectionProps) => {
               <LayoutGroup>
                 <motion.div layout className="flex flex-col space-y-2">
                   <motion.span layout className={`text-mint-dark text-lg font-orbitron ${isDark ? "text-mint" : "text-mint-dark"}`}>
-                    {data.hero.badge}
+                    {lang === "ar" ? data?.ar?.hero?.badge : data?.hero?.badge}
                   </motion.span>
                   <motion.h1 layout className={`text-4xl md:text-6xl font-bold  ${isDark ? "text-mint" : "text-black"} font-orbitron ${lang === "ar" ? "text-right w-full" : ""}`}>
                     <span className={lang === "ar" ? "inline-block ml-2" : "inline-block mr-2"}>
@@ -97,7 +98,7 @@ const HeroSection = ({ data, lang, isDark }: HeroSectionProps) => {
                 transition={{ delay: 0.3 }}
                 className={`text-lg md:text-xl ${isDark ? "text-mint/80" : "text-gray-700"} max-w-xl font-orbitron`}
               >
-                {data.hero.desc}
+                {lang === "ar" ? data?.ar?.hero?.desc : data?.hero?.desc}
               </motion.p>
 
               <motion.div
