@@ -458,17 +458,17 @@ const Index = () => {
   return (
     <div className={`${isDark ? "dark" : ""} min-h-screen bg-white dark:bg-black text-gray-800 dark:text-mint font-orbitron`} dir={dir} lang={lang}>
       <Topbar isDark={isDark} setIsDark={setIsDark} lang={lang} setLang={setLang} data={data} />
-      <HeroSection data={data} lang={lang} isDark={isDark} />
-      <AboutSection data={data} />
+      <HeroSection data={data ?? { hero: { badge: '', title: '', desc: '', talk: '' } }} lang={lang} isDark={isDark} />
+      <AboutSection data={data ?? { about: { heading: '', desc: '', keywords: [], ceo: { role: '', quote: '' } } }} />
       <RetroGridDemo isDark={isDark} lang={lang}  />
       <TextRevealComponent lang={lang} />
-      <ServicesSection data={data} />
+      <ServicesSection data={data ?? { services: { heading: '', desc: '', list: [] } }} />
       
       {/* How We Work Section */}
       <section className="w-full bg-white dark:bg-neutral-950 font-sans md:px-10 py-20">
-        <Title title={data.howWeWork.heading} des={data.howWeWork.desc} />
+        <Title title={data?.howWeWork?.heading} des={data?.howWeWork?.desc} />
         <div className="relative max-w-7xl mx-auto pb-20">
-          {data.howWeWork.steps.map((step, index) => (
+          {data?.howWeWork?.steps.map((step, index) => (
             <motion.div
               key={index}
               initial={{ opacity: 0, y: 20 }}
@@ -513,8 +513,8 @@ const Index = () => {
       <TestimonialsSection
         lang={lang}
       />
-      <ContactSection data={data} dir={dir} />
-      <Footer data={data} />
+      <ContactSection data={data ?? { contact: { heading: '', desc: '', name: '', email: '', message: '', send: '' } }} dir={dir} />
+      <Footer data={data ?? { footer: { copyright: '', right: '', credit: '' } }} />
     </div>
   );
 };

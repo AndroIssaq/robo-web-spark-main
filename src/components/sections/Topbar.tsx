@@ -20,11 +20,11 @@ const Topbar = ({ isDark, setIsDark, lang, setLang, data }: TopbarProps) => {
   const [drawerOpen, setDrawerOpen] = React.useState(false);
 
   const navLinks = [
-    { href: "#hero", label: data.nav.home },
-    { href: "#about", label: data.nav.about },
-    { href: "#services", label: data.nav.services },
-    { href: "#assistant", label: data.nav.assistant },
-    { href: "#contact", label: data.nav.contact },
+    { href: "#hero", label: data?.nav?.home },
+    { href: "#about", label: data?.nav?.about },
+    { href: "#services", label: data?.nav?.services },
+    { href: "#assistant", label: data?.nav?.assistant },
+    { href: "#contact", label: data?.nav?.contact },
   ];
 
   return (
@@ -49,7 +49,7 @@ const Topbar = ({ isDark, setIsDark, lang, setLang, data }: TopbarProps) => {
 
         {/* Desktop Navigation */}
         <nav className="hidden md:flex gap-2 lg:gap-6 items-center flex-shrink-0">
-          {navLinks.map((link) => (
+          {navLinks?.map((link) => (
             <a
               key={link.href}
               href={link.href}
@@ -76,7 +76,7 @@ const Topbar = ({ isDark, setIsDark, lang, setLang, data }: TopbarProps) => {
             ) : (
               <Sun className="w-4 h-4 mr-1" />
             )}
-            {isDark ? data.nav.dark : data.nav.light}
+            {isDark ? data?.nav?.dark : data?.nav?.light}
           </span>
 
           {/* Language Toggle */}
