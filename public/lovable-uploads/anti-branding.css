@@ -1,0 +1,44 @@
+/* Precisely targeted anti-branding CSS - only targets footer/branding elements */
+
+/* Target only the specific branding elements in Voiceflow widget */
+[data-testid="vf-footer"],
+div[data-testid="vf-footer"],
+.vf-footer,
+div.vf-footer,
+[class*="FooterBranding"],
+[class*="BrandingFooter"],
+[role="contentinfo"][class*="footer"],
+div.vf-custom-branding,
+div[class*="PoweredBy"],
+div[class*="poweredBy"],
+a[href*="voiceflow.com"] {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  height: 0 !important;
+  max-height: 0 !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  border: 0 !important;
+  overflow: hidden !important;
+  pointer-events: none !important;
+}
+
+/* Target footer without breaking main containers */
+div[class*="footer"]:not([class*="Container"]):not([class*="content"]):not([class*="header"]),
+div[class*="Footer"]:not([class*="Container"]):not([class*="Content"]):not([class*="Header"]) {
+  display: none !important;
+  visibility: hidden !important;
+  height: 0 !important;
+}
+
+/* Very specific targeting for VF widgets */
+div[id^="voiceflow-chat"] div[class*="footer"],
+div[id^="voiceflow-chat"] div[class*="Footer"],
+div[id^="voiceflow-chat"] a[href*="voiceflow"],
+div[id^="voiceflow-chat"] [aria-label*="Powered by"] {
+  display: none !important;
+  visibility: hidden !important;
+  height: 0 !important;
+  margin: 0 !important;
+}
