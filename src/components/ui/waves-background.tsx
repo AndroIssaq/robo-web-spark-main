@@ -275,39 +275,17 @@ export function Waves({
       setSize()
       setLines()
     }
-    function onMouseMove(e) {
-      updateMouse(e.pageX, e.pageY)
-    }
-    function onTouchMove(e) {
-      e.preventDefault()
-      const touch = e.touches[0]
-      updateMouse(touch.clientX, touch.clientY)
-    }
-    function updateMouse(x, y) {
-      const mouse = mouseRef.current
-      const b = boundingRef.current
-      mouse.x = x - b.left
-      mouse.y = y - b.top + window.scrollY
-      if (!mouse.set) {
-        mouse.sx = mouse.x
-        mouse.sy = mouse.y
-        mouse.lx = mouse.x
-        mouse.ly = mouse.y
-        mouse.set = true
-      }
-    }
+   
+    
 
     setSize()
     setLines()
     requestAnimationFrame(tick)
     window.addEventListener("resize", onResize)
-    window.addEventListener("mousemove", onMouseMove)
-    window.addEventListener("touchmove", onTouchMove, { passive: false })
-
+  
     return () => {
       window.removeEventListener("resize", onResize)
-      window.removeEventListener("mousemove", onMouseMove)
-      window.removeEventListener("touchmove", onTouchMove)
+
     }
   }, [
     lineColor,

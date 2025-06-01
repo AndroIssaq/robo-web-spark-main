@@ -183,7 +183,7 @@ const TextRotate = forwardRef<TextRotateRef, TextRotateProps>(
           <motion.div
             key={currentTextIndex}
             className={cn(
-              "flex flex-wrap ",
+              "flex flex-wrap whitespace-pre-wrap overflow-hidden",
               isRTL && "flex-row-reverse",
               splitBy === "lines" && "flex-col w-full"
             )}

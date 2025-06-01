@@ -1,18 +1,19 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useDarkMode } from "../hooks/useDarkMode";
 import { useLanguage } from "../hooks/useLanguage";
 import { motion } from "framer-motion";
 
 // Import sections
+import SectorsSection from "@/components/sections/SectorsSection";
+
 import Topbar from "@/components/sections/Topbar";
 import HeroSection from "@/components/sections/HeroSection";
 import AboutSection from "@/components/sections/AboutSection";
-import ServicesSection from "@/components/sections/ServicesSection";
 import AssistantSection from "@/components/sections/AssistantSection";
 import ContactSection from "@/components/sections/ContactSection";
 import Footer from "@/components/sections/Footer";
 import { TestimonialsSection } from "@/components/sections/TestimonialsSection";
-import Title from "@/components/App Components/Title";
+;
 
 // Images
 const imgHero = "/lovable-uploads/af0bb2cb-5eec-47b9-8b7e-5bb148803c00.png";
@@ -44,6 +45,7 @@ const develop4 = '/develop (4).jpg';
 import { WeAreTheBest } from "@/components/sections/WeAreTheBest";
 import { TextRevealComponent } from "@/components/sections/TextReveal";
 import { RetroGridDemo } from "@/components/sections/RetroGrid";
+import PricingSection from "@/components/sections/PricingSection";
 
 // Animation variants
 const fadeIn = {
@@ -451,8 +453,23 @@ const Index = () => {
 
   const [isDark, setIsDark] = useDarkMode();
   const [lang, setLang] = useLanguage();
+  const [remainingCompanies] = useState(6); // عداد ثابت الآن
   console.log(lang);
   const dir = lang === "ar" ? "rtl" : "ltr";
+  const [bannerTop, setBannerTop] = useState(0);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 0) {
+        setBannerTop(65);
+      } else {
+        setBannerTop(0);
+      }
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
   // Utility function for deep merging two objects
 function deepMerge(target: any, source: any): any {
   // Prefer target if it is a primitive (string, number, boolean) and is not undefined/null
@@ -493,19 +510,34 @@ const data = deepMerge(t[lang], t.en);
 
   return (
     <div className={`${isDark ? "dark" : ""} min-h-screen bg-white dark:bg-black text-gray-800 dark:text-mint font-orbitron`} dir={dir} lang={lang}>
+      {/* Smart Banner with counter */}
+      <div
+        className="fixed left-0 w-full flex justify-center items-center py-2 px-4 md:py-3 md:px-0 z-[30] transition-all duration-300"
+        style={{ top: bannerTop, pointerEvents: 'none' }}
+      >
+        <div
+          className="backdrop-blur-md bg-mint/20 dark:bg-mint/10 border border-mint/40 rounded-2xl shadow-lg px-6 py-2 md:py-3 text-center flex items-center gap-3 animate-fade-in"
+          style={{ pointerEvents: 'auto' }}
+        >
+          <span className="inline-block text-mint font-bold text-base md:text-lg tracking-wider">
+            {lang === "ar"
+              ? `متبقي ${remainingCompanies} من أصل 10 شركات للاستفادة من العرض`
+              : `${remainingCompanies} out of 10 companies left for the offer`}
+          </span>
+          <span className="ml-2 animate-pulse text-2xl">🎉</span>
+        </div>
+      </div>
+      {/* Spacer for fixed banner */}
+      <div className="h-20 md:h-20"></div>
       <Topbar isDark={isDark} setIsDark={setIsDark} lang={lang} setLang={setLang} data={data} />
       <HeroSection data={data} lang={lang} isDark={isDark} />
-      <AboutSection data={data} lang={lang} />
-      <RetroGridDemo isDark={isDark} lang={lang}  />
       <AssistantSection data={data} lang={lang}/>
+      <SectorsSection lang={lang}/>
+      <PricingSection lang={lang}/>
+      <AboutSection data={data} lang={lang} />
       <TextRevealComponent lang={lang} />
-      <ServicesSection data={data} lang={lang} />
-      
-      
-
-          
-          <WeAreTheBest lang={lang} />
-      
+      <WeAreTheBest lang={lang} />
+    
       <TestimonialsSection
         lang={lang}
       />
@@ -516,3 +548,4 @@ const data = deepMerge(t[lang], t.en);
 };
 
 export default Index;
+

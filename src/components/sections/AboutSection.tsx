@@ -13,7 +13,7 @@ const AboutSection = ({ data, lang }: AboutSectionProps) => {
       whileInView="visible"
       viewport={{ once: true }}
       id="about" 
-      className="grid grid-cols-1 md:grid-cols-2 gap-8 px-6 py-14 items-center bg-gray-50 dark:bg-black/90"
+      className="grid grid-cols-1 md:grid-cols-2 gap-8 px-6 py-14 items-center bg-gray-50 dark:bg-black/90 overflow-hidden"
     >
       {/* About/Team Side */}
       <motion.div variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0, transition: { duration: 0.6 } } }}>

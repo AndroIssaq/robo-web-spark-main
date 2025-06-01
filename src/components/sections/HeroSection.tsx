@@ -78,10 +78,10 @@ const HeroSection = ({ data, lang, isDark }: HeroSectionProps) => {
                     </span>
                     <TextRotate
                       texts={textRotateItems}
-                      mainClassName={`${isDark ? "text-mint" : "text-mint-dark"} inline-block overflow-hidden ${lang === "ar" ? "text-right" : ""}`}
+                      mainClassName={`${isDark ? "text-mint" : "text-mint-dark"} inline-block overflow-hidden ${lang === "ar" ? "text-center" : ""}`}
                       staggerDuration={0.05}
                       rotationInterval={3000}
-                      isRTL={lang === "ar"}
+                     
                       splitBy="words"
                       initial={{ opacity: 0, y: 20 }}
                       animate={{ opacity: 1, y: 0 }}

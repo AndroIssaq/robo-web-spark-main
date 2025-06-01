@@ -14,7 +14,7 @@ const ar = {
   features: [
     {
       title: 'توصيات ذكية',
-      desc: 'يتعلم مساعدنا الذكي تفضيلاتك ويقدم توصيات مخصصة للأجهزة المناسبة لك.'
+      desc: 'يتعلم مساعدنا الذكي تفضيلاتك ويقدم توصيات مخصصة مناسبة لك.'
     },
     {
       title: 'شراء فوري',
@@ -36,7 +36,7 @@ const en = {
   features: [
     {
       title: 'Smart Recommendations',
-      desc: 'Our smart assistant learns your preferences and provides personalized device recommendations.'
+      desc: 'Our smart assistant learns your preferences and provides personalized recommendations.'
     },
     {
       title: 'Instant Purchase',
@@ -139,15 +139,15 @@ const AssistantSection = ({ data, lang }: AssistantSectionProps) => {
       variants={{ hidden: { opacity: 0 }, visible: { opacity: 1, transition: { staggerChildren: 0.2 } } }}
       id="assistant"
       dir={sectionDir}
-      className={`px-4 md:px-12 py-12 md:py-20 flex flex-col ${sectionDir === 'rtl' ? 'md:flex-row-reverse' : 'md:flex-row'} items-center gap-10 md:gap-20 bg-gradient-to-br from-white via-mint/5 to-mint/10 dark:from-black dark:via-neutral-950 dark:to-mint-dark/10 font-orbitron`}
+      className={`px-4 md:px-12 py-12 md:py-20 flex flex-col ${sectionDir === 'rtl' ? 'md:flex-row-reverse' : 'md:flex-row'} items-center gap-10 md:gap-20 bg-gradient-to-br from-white via-mint/5 to-mint/10 dark:from-black dark:via-neutral-950 dark:to-mint-dark/10 font-orbitron overflow-hidden`}
     >
       {/* Image Right */}
       <motion.div 
-        variants={{ hidden: { opacity: 0, x: 40 }, visible: { opacity: 1, x: 0, transition: { duration: 0.6 } } }}
+       
         className="flex-1 flex justify-center items-center"
       >
         <motion.div
-          className="rounded-2xl overflow-hidden shadow-2xl border-2 border-mint/70 bg-gradient-to-br from-neutral-100 to-white dark:from-neutral-950 dark:to-black p-2 w-[420px] h-[420px] flex items-center justify-center"
+          className="rounded-2xl lg:w-[70%] w-[100%] overflow-hidden shadow-2xl border-2 border-mint/70 bg-gradient-to-br from-neutral-100 to-white dark:from-neutral-950 dark:to-black p-2 flex items-center justify-center"
           animate={{ y: [0, -20, 0, 20, 0] }}
           transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
         >
@@ -167,7 +167,7 @@ const AssistantSection = ({ data, lang }: AssistantSectionProps) => {
         <h2 className={`text-3xl md:text-4xl font-bold mb-2 leading-tight ${align}`}>
           {t.heading}
         </h2>
-        <p className={`text-gray-700 dark:text-white/80 text-base mb-8 max-w-lg ${align}`}>
+        <p className={`text-gray-700  dark:text-white/80 text-base mb-8 max-w-lg ${align}`}>
           {t.desc}
         </p>
         {/* Features */}
