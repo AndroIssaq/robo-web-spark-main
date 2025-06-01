@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { useEffect , useState , useRef} from "react";
+import { Link } from "react-router-dom";
 interface PricingSectionProps {
   data: any;
   lang: string;
@@ -158,12 +159,12 @@ const PricingSection = ({ data, lang }: PricingSectionProps) => {
 >
 {isWidgetVisible ? (lang === "ar" ? "إخفاء الشات" : "Hide chat") : (lang === "ar" ? "  اشتري من سارة و احصل علي خصم 15% " : "Try buying from Sara")}
 </button>
- <button
-          
-  className="px-6 py-2 mt-[15px] w-full  rounded-[2em] bg-green-300 text-black font-bold shadow transition hover:bg-mint-dark hidden md:block"
+ <Link to={"/buy-now"}
+
+  className="px-6 py-2 mt-[15px] w-full text-center  rounded-[2em] bg-green-300 text-black font-bold shadow transition hover:bg-mint-dark hidden md:block"
 >
 {isWidgetVisible ? (lang === "ar" ? "إخفاء الشات" : "Hide chat") : (lang === "ar" ? " اشتري من غير ما تكلم سارة" : "   Buy without talking to Sara")}
-</button>
+</Link>
           </div>
         </motion.div>
 
