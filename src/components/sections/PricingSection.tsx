@@ -155,16 +155,15 @@ const PricingSection = ({ data, lang }: PricingSectionProps) => {
           <button
            id='toggle-widget-btn'
            onClick={handleButtonClick}
-  className="px-6 py-2 w-full  rounded-[2em] bg-mint text-black font-bold shadow transition hover:bg-mint-dark hidden md:block"
->
-{isWidgetVisible ? (lang === "ar" ? "إخفاء الشات" : "Hide chat") : (lang === "ar" ? "  اشتري من سارة و احصل علي خصم 15% " : "Try buying from Sara")}
-</button>
- <Link to={"/buy-now"}
-
-  className="px-6 py-2 mt-[15px] w-full text-center  rounded-[2em] bg-green-300 text-black font-bold shadow transition hover:bg-mint-dark hidden md:block"
->
-{isWidgetVisible ? (lang === "ar" ? "إخفاء الشات" : "Hide chat") : (lang === "ar" ? " اشتري من غير ما تكلم سارة" : "   Buy without talking to Sara")}
-</Link>
+           className="px-6 py-2 w-full rounded-[2em] bg-mint text-black font-bold shadow transition hover:bg-mint-dark block md:block"
+          >
+            {isWidgetVisible ? (lang === "ar" ? "إخفاء الشات" : "Hide chat") : (lang === "ar" ? "  اشتري من سارة و احصل علي خصم 15% " : "Try buying from Sara")}
+          </button>
+          <Link to={"/buy-now"}
+            className="px-6 py-2 mt-[15px] w-full text-center rounded-[2em] bg-green-300 text-black font-bold shadow transition hover:bg-mint-dark block md:block"
+          >
+            {isWidgetVisible ? (lang === "ar" ? "إخفاء الشات" : "Hide chat") : (lang === "ar" ? " اشتري من غير ما تكلم سارة" : "   Buy without talking to Sara")}
+          </Link>
           </div>
         </motion.div>
 

@@ -20,11 +20,12 @@ const Topbar = ({ isDark, setIsDark, lang, setLang, data }: TopbarProps) => {
   const [drawerOpen, setDrawerOpen] = React.useState(false);
 
   const navLinks = [
-    { href: "#hero", label: lang==="en" ? data?.nav?.home : data?.ar?.nav?.home },
-    { href: "#about", label: lang==="en" ? data?.nav?.about : data?.ar?.nav?.about    },
-    { href: "#services", label:  lang==="en" ? data?.nav?.services : data?.ar?.nav?.services   },
-    { href: "#assistant", label: lang==="en" ? data?.nav?.assistant : data?.ar?.nav?.assistant  },
-    { href: "#contact", label: lang==="en" ? data?.nav?.contact : data?.ar?.nav?.contact },
+    { href: "#hero", label: lang === "en" ? "Home" : "الرئيسية" },
+    { href: "#assistant", label: lang === "en" ? "Assistant" : "سارة الذكية" },
+    { href: "#sectors", label: lang === "en" ? "Sectors" : "القطاعات" },
+    { href: "#pricing", label: lang === "en" ? "Pricing" : "الأسعار" },
+    { href: "#about", label: lang === "en" ? "About" : "من نحن" },
+    { href: "#contact", label: lang === "en" ? "Contact" : "تواصل معنا" },
   ];
 
   
@@ -55,6 +56,13 @@ const Topbar = ({ isDark, setIsDark, lang, setLang, data }: TopbarProps) => {
             <a
               key={link.href}
               href={link.href}
+              onClick={e => {
+                e.preventDefault();
+                const section = document.querySelector(link.href);
+                if (section) {
+                  section.scrollIntoView({ behavior: 'smooth' });
+                }
+              }}
               className="rounded-lg px-4 py-2 text-base font-semibold text-gray-800 dark:text-white transition hover:bg-mint/10 hover:text-mint-dark focus:bg-mint/10 focus:text-mint-dark"
             >
               {link.label}
@@ -110,7 +118,14 @@ const Topbar = ({ isDark, setIsDark, lang, setLang, data }: TopbarProps) => {
               <a
                 key={link.href}
                 href={link.href}
-                onClick={() => setDrawerOpen(false)}
+                onClick={e => {
+                  e.preventDefault();
+                  setDrawerOpen(false);
+                  const section = document.querySelector(link.href);
+                  if (section) {
+                    setTimeout(() => section.scrollIntoView({ behavior: 'smooth' }), 200);
+                  }
+                }}
                 className="rounded-lg px-4 py-2 text-lg font-semibold text-gray-800 dark:text-white transition hover:bg-mint/10 hover:text-mint-dark focus:bg-mint/10 focus:text-mint-dark"
               >
                 {link.label}
@@ -146,4 +161,4 @@ const Topbar = ({ isDark, setIsDark, lang, setLang, data }: TopbarProps) => {
   );
 };
 
-export default Topbar; 
+export default Topbar;

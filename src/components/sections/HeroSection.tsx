@@ -38,7 +38,7 @@ const HeroSection = ({ data, lang, isDark }: HeroSectionProps) => {
     : ["مبتكر", "قوي", "ذكي", "مذهل", "متميز"];
 
   return (
-    <section className={`min-h-screen ${isDark ? "bg-black" : "bg-white"} pt-32 pb-16 md:pb-24 relative overflow-hidden`}>
+    <section id="hero" className={`min-h-screen ${isDark ? "bg-black" : "bg-white"} pt-32 pb-16 md:pb-24 relative overflow-hidden`}>
       {/* Waves Background */}
       <Waves
         lineColor={isDark ? "rgba(255, 255, 255, 0.2)" : "rgba(0, 0, 0, 0.1)"}
