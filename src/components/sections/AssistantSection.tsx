@@ -58,6 +58,7 @@ const AssistantSection = ({ data, lang }: AssistantSectionProps) => {
   const [isVisible, setIsVisible] = useState(false);
   const sectionRef = useRef<HTMLElement>(null);
   const [isWidgetVisible, setIsWidgetVisible] = useState(false);
+  
   useEffect(() => {
     const widget = document.getElementById("voiceflow-chat");
 
@@ -97,17 +98,36 @@ const AssistantSection = ({ data, lang }: AssistantSectionProps) => {
         document.removeEventListener("click", handleClickOutside);
       }
 
-      return () => document.removeEventListener("click", handleClickOutside);
-    }
-  }, [isWidgetVisible]);
+        return () => document.removeEventListener("click", handleClickOutside);
+      }
+  }, []);
 
   const handleButtonClick = (event) => {
-  event.stopPropagation();
-  // استخدم API Voiceflow الرسمي
-  if (window.voiceflow && window.voiceflow.chat && typeof window.voiceflow.chat.open === 'function') {
-    window.voiceflow.chat.open();
-  }
-};
+    event.stopPropagation();
+    const openChat = () => {
+      if (window.voiceflow?.chat?.open) {
+        window.voiceflow.chat.open();
+      }
+    };
+
+    if (!window.voiceflow) {
+      const vfScript = document.createElement('script');
+      vfScript.src = 'https://cdn.voiceflow.com/widget-next/bundle.mjs';
+      vfScript.type = 'text/javascript';
+      vfScript.onload = () => {
+        window.voiceflow.chat.load({
+          verify: { projectID: '68060269b55d846dc89272b5' },
+          url: 'https://general-runtime.voiceflow.com',
+          versionID: 'production',
+          voice: { url: 'https://runtime-api.voiceflow.com' },
+        });
+        openChat();
+      };
+      document.body.appendChild(vfScript);
+    } else {
+      openChat();
+    }
+  };
   
   // Language selection (default to Arabic)
   const t = lang === 'en' ? en : ar;

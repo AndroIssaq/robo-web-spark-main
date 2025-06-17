@@ -37,7 +37,7 @@ const HeroSection = ({ data, lang, isDark }: HeroSectionProps) => {
     : ["مبتكر", "قوي", "ذكي", "مذهل", "متميز"];
 
   return (
-    <section id="hero" className={`min-h-screen ${isDark ? "bg-black" : "bg-white"} pt-32 pb-16 md:pb-24 relative overflow-hidden`}>
+    <section id="hero" className={`min-h-screen ${isDark ? "bg-black" : "bg-white"} pt-32 pb-16 md:pb-24 flex flex-col items-center justify-center relative overflow-hidden`}>
       {/* Waves Background */}
       <Waves
         lineColor={isDark ? "rgba(255, 255, 255, 0.2)" : "rgba(0, 0, 0, 0.1)"}
@@ -57,21 +57,21 @@ const HeroSection = ({ data, lang, isDark }: HeroSectionProps) => {
       <div className={`absolute top-1/4 left-1/4 w-64 h-64 ${isDark ? "bg-mint/10" : "bg-mint/5"} rounded-full blur-3xl -z-10`} />
       <div className={`absolute bottom-1/4 right-1/4 w-80 h-80 ${isDark ? "bg-mint/10" : "bg-mint/5"} rounded-full blur-3xl -z-10`} />
       
-      <div className="container mx-auto px-4 md:px-8 relative z-10">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+      <div className="w-full px-4  md:px-8 relative z-10">
+        <div className="flex flex-col items-center justify-center text-center w-full">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
             className={`order-2 lg:order-1 ${lang === "ar" ? "lg:order-2" : ""}`}
           >
-            <div className="flex flex-col items-start space-y-6">
+            <div className="flex flex-col items-center space-y-6">
               <LayoutGroup>
                 <motion.div layout className="flex flex-col space-y-2">
                   <motion.span layout className={`text-mint-dark text-lg font-orbitron ${isDark ? "text-mint" : "text-mint-dark"}`}>
                     {lang === "ar" ? data?.ar?.hero?.badge : data?.hero?.badge}
                   </motion.span>
-                  <motion.h1 layout className={`text-4xl md:text-6xl font-bold  ${isDark ? "text-mint" : "text-black"} font-orbitron ${lang === "ar" ? "text-right w-full" : ""}`}>
+                  <motion.h1 layout className={`text-5xl md:text-7xl lg:text-8xl font-bold  ${isDark ? "text-mint" : "text-black"} font-orbitron ${lang === "ar" ? "text-right w-full" : ""}`}>
                     <span className={lang === "ar" ? "inline-block ml-2" : "inline-block mr-2"}>
                       {lang === "en" ? "Make your website " : "اجعل موقعك "}
                     </span>
@@ -95,7 +95,7 @@ const HeroSection = ({ data, lang, isDark }: HeroSectionProps) => {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.3 }}
-                className={`text-lg md:text-xl ${isDark ? "text-mint/80" : "text-gray-700"} max-w-xl font-orbitron`}
+                className={`text-xl md:text-2xl lg:text-3xl ${isDark ? "text-mint/80" : "text-gray-700"} w-full font-orbitron`}
               >
                 {lang === "ar" ? data?.ar?.hero?.desc : data?.hero?.desc}
               </motion.p>
@@ -104,12 +104,12 @@ const HeroSection = ({ data, lang, isDark }: HeroSectionProps) => {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.5 }}
-                className="flex flex-col sm:flex-row gap-4 font-orbitron"
+                className="flex flex-col sm:flex-row gap-6 font-orbitron"
               >
                 <motion.button
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
-                  className="bg-mint text-black px-8 py-3 rounded-lg font-bold hover:bg-mint-dark transition-colors text-lg"
+                  className="bg-mint text-black px-8 py-3 rounded-lg font-bold hover:bg-mint-dark transition-colors text-xl"
                   onClick={handleAssistantClick}
                 >
                   {lang === "en" ? "Get 15% Discount" : "احصل علي 15% خصم"}
@@ -152,41 +152,7 @@ const HeroSection = ({ data, lang, isDark }: HeroSectionProps) => {
                 </div>
               </motion.div>
             </div>
-          </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-            className={`order-1 lg:order-2 ${lang === "ar" ? "lg:order-1" : ""}`}
-          >
-            <div className="relative">
-              <div className="gradient-border">
-                <img 
-                  src="/lovable-uploads/af0bb2cb-5eec-47b9-8b7e-5bb148803c00.png"
-                  alt="RoboWeb Interface"
-                  width="800" height="600"
-                  loading="lazy" decoding="async"
-                  className="w-full h-auto rounded-lg shadow-xl"
-                  sizes="(max-width: 1024px) 100vw, 50vw"
-                />
-              </div>
-              
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.8 }}
-                className={`absolute -bottom-6 -right-6 ${isDark ? "bg-black/80" : "bg-white/80"} backdrop-blur-sm rounded-lg p-4`}
-              >
-                <div className="flex items-center gap-3">
-                  <div className="w-3 h-3 rounded-full bg-mint animate-pulse"></div>
-                  <p className={`text-sm font-medium ${isDark ? "text-mint" : "text-mint-dark"}`}>
-                    {lang === "en" ? "AI Assistant Online" : "المساعد الذكي متصل"}
-                  </p>
-                </div>
-              </motion.div>
-            </div>
-          </motion.div>
+            </motion.div>
         </div>
       </div>
     </section>
