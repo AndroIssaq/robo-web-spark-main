@@ -3,7 +3,6 @@ import { TextRotate } from "@/components/ui/TextRotate"
 import { Language } from "@/hooks/useLanguage"
 import { ReactElement, useCallback } from "react"
 import { Waves } from "@/components/ui/waves-background"
-import { useTheme } from "next-themes"
 
 interface HeroSectionProps {
   data: {
@@ -166,7 +165,10 @@ const HeroSection = ({ data, lang, isDark }: HeroSectionProps) => {
                 <img 
                   src="/lovable-uploads/af0bb2cb-5eec-47b9-8b7e-5bb148803c00.png"
                   alt="RoboWeb Interface"
+                  width="800" height="600"
+                  loading="lazy" decoding="async"
                   className="w-full h-auto rounded-lg shadow-xl"
+                  sizes="(max-width: 1024px) 100vw, 50vw"
                 />
               </div>
               

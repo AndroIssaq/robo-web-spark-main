@@ -102,9 +102,12 @@ const AssistantSection = ({ data, lang }: AssistantSectionProps) => {
   }, [isWidgetVisible]);
 
   const handleButtonClick = (event) => {
-    event.stopPropagation();
-    setIsWidgetVisible(!isWidgetVisible);
-  };
+  event.stopPropagation();
+  // استخدم API Voiceflow الرسمي
+  if (window.voiceflow && window.voiceflow.chat && typeof window.voiceflow.chat.open === 'function') {
+    window.voiceflow.chat.open();
+  }
+};
   
   // Language selection (default to Arabic)
   const t = lang === 'en' ? en : ar;
