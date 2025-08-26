@@ -3,6 +3,13 @@ import chat from "../../lovable-uploads/a-smiling-girl-robot-with-mint-green-and
 import { cn } from "@/lib/utils";
 import { useEffect, useRef, useState } from 'react';
 
+declare global {
+  interface Window {
+    voiceflow?: any;
+    __vfLoaded?: boolean;
+  }
+}
+
 interface AssistantSectionProps {
   data: any;
   lang?: 'ar' | 'en'; // Optional language prop
@@ -60,73 +67,123 @@ const AssistantSection = ({ data, lang }: AssistantSectionProps) => {
   const [isWidgetVisible, setIsWidgetVisible] = useState(false);
   
   useEffect(() => {
-    const widget = document.getElementById("voiceflow-chat");
+    // Close the widget when clicking outside of it
+    const handleClickOutside = (event: any) => {
+      const widget = document.getElementById('voiceflow-chat');
+      if (!widget) return;
 
-    if (widget && widget.shadowRoot) {
-      const chatContainer = widget.shadowRoot.querySelector(".vfrc-widget");
-      const overlay = widget.shadowRoot.querySelector("._1wkq7nf7");
+      const path: any[] = typeof event.composedPath === 'function' ? event.composedPath() : [];
+      const clickedInsideWidget = path.some(
+        (el) => el && (el.id === 'voiceflow-chat' || (el.classList && el.classList.contains('vfrc-chat')))
+      );
 
-      if (chatContainer && overlay) {
-        if (isWidgetVisible) {
-          chatContainer.classList.add("_1wkq7nf1");
-          chatContainer.classList.remove("_1wkq7nf2");
-          overlay.classList.add("_1wkq7nf8");
-        } else {
-          chatContainer.classList.remove("_1wkq7nf1");
-          chatContainer.classList.add("_1wkq7nf2");
-          overlay.classList.remove("_1wkq7nf8");
-        }
-      }
-
-      // منع إغلاق الويدجت عند الضغط داخلها
-      const handleClickOutside = (event) => {
-        if (!widget.shadowRoot) return;
-
-        // التحقق إذا كان الكليك حصل داخل الـ widget
-        const clickedInsideWidget = event.composedPath().some(
-          (el) => el.classList && el.classList.contains("vfrc-chat")
-        );
-
-        if (!clickedInsideWidget) {
-          setIsWidgetVisible(false);
-        }
-      };
-
-      if (isWidgetVisible) {
-        document.addEventListener("click", handleClickOutside);
-      } else {
-        document.removeEventListener("click", handleClickOutside);
-      }
-
-        return () => document.removeEventListener("click", handleClickOutside);
-      }
-  }, []);
-
-  const handleButtonClick = (event) => {
-    event.stopPropagation();
-    const openChat = () => {
-      if (window.voiceflow?.chat?.open) {
-        window.voiceflow.chat.open();
+      if (!clickedInsideWidget) {
+        try { window.voiceflow?.chat?.close?.(); } catch {}
+        setIsWidgetVisible(false);
       }
     };
 
-    if (!window.voiceflow) {
-      const vfScript = document.createElement('script');
-      vfScript.src = 'https://cdn.voiceflow.com/widget-next/bundle.mjs';
-      vfScript.type = 'text/javascript';
-      vfScript.onload = () => {
-        window.voiceflow.chat.load({
-          verify: { projectID: '68060269b55d846dc89272b5' },
-          url: 'https://general-runtime.voiceflow.com',
-          versionID: 'production',
-          voice: { url: 'https://runtime-api.voiceflow.com' },
-        });
-        openChat();
-      };
-      document.body.appendChild(vfScript);
-    } else {
-      openChat();
+    if (isWidgetVisible) {
+      document.addEventListener('click', handleClickOutside);
     }
+    return () => document.removeEventListener('click', handleClickOutside);
+  }, [isWidgetVisible]);
+
+  const handleButtonClick = async (event: any) => {
+    event.stopPropagation();
+    // Toggle close if already visible
+    if (isWidgetVisible) {
+      try { window.voiceflow?.chat?.close?.(); } catch {}
+      setIsWidgetVisible(false);
+      return;
+    }
+
+    const config = {
+      verify: { projectID: '68060269b55d846dc89272b5' },
+      url: 'https://general-runtime.voiceflow.com',
+      versionID: 'production',
+      voice: { url: 'https://runtime-api.voiceflow.com' },
+    } as const;
+
+    const openChat = () => {
+      try {
+        window.voiceflow?.chat?.open?.();
+        setIsWidgetVisible(true);
+      } catch {}
+    };
+
+    const ensureScriptLoaded = () => new Promise<void>((resolve) => {
+      if (window.voiceflow && window.voiceflow.chat) return resolve();
+
+      const waitForChat = (timeoutMs = 5000) => {
+        const start = Date.now();
+        const tick = () => {
+          if (window.voiceflow && window.voiceflow.chat) return resolve();
+          if (Date.now() - start > timeoutMs) return resolve();
+          setTimeout(tick, 100);
+        };
+        tick();
+      };
+
+      const inject = (src: string, type: 'module' | 'text/javascript') => {
+        const tag = document.createElement('script');
+        tag.src = src;
+        tag.type = type;
+        tag.async = true;
+        tag.onload = () => waitForChat(5000);
+        tag.onerror = () => waitForChat(1500);
+        document.body.appendChild(tag);
+      };
+
+      // If an existing tag is present but wrong type, remove it
+      const nextSel = 'script[src*="cdn.voiceflow.com/widget-next/bundle.mjs"]';
+      const legacySel = 'script[src*="cdn.voiceflow.com/widget/bundle.mjs"]';
+      const existingNext = document.querySelector(nextSel) as HTMLScriptElement | null;
+      const existingLegacy = document.querySelector(legacySel) as HTMLScriptElement | null;
+
+      if (existingNext && existingNext.type !== 'module') existingNext.parentNode?.removeChild(existingNext);
+      if (existingLegacy && existingLegacy.type !== 'text/javascript') existingLegacy.parentNode?.removeChild(existingLegacy);
+
+      // Inject modern first, then fallback to legacy after a short delay if still not ready
+      inject('https://cdn.voiceflow.com/widget-next/bundle.mjs', 'module');
+      setTimeout(() => {
+        if (!(window.voiceflow && window.voiceflow.chat)) {
+          inject('https://cdn.voiceflow.com/widget/bundle.mjs', 'text/javascript');
+        }
+      }, 800);
+    });
+
+    await ensureScriptLoaded();
+    // Ensure the global window.voiceflow is actually ready
+    if (!window.voiceflow || !window.voiceflow.chat) {
+      await new Promise<void>((resolve) => {
+        const start = Date.now();
+        const tick = () => {
+          if (window.voiceflow && window.voiceflow.chat) return resolve();
+          if (Date.now() - start > 5000) return resolve();
+          setTimeout(tick, 100);
+        };
+        tick();
+      });
+    }
+
+    // Initialize chat once
+    const alreadyInitialized = window.__vfLoaded || !!document.getElementById('voiceflow-chat');
+    if (!alreadyInitialized) {
+      try { window.voiceflow.chat.load(config); window.__vfLoaded = true; } catch {}
+      // wait until widget mounts (best-effort)
+      await new Promise<void>((resolve) => {
+        const start = Date.now();
+        const tick = () => {
+          if (document.getElementById('voiceflow-chat')) return resolve();
+          if (Date.now() - start > 3000) return resolve();
+          requestAnimationFrame(tick);
+        };
+        tick();
+      });
+    }
+
+    openChat();
   };
   
   // Language selection (default to Arabic)

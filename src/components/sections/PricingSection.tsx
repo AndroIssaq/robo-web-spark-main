@@ -1,6 +1,13 @@
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
-import { useEffect , useState , useRef} from "react";
+import { useEffect, useState, useRef } from "react";
+
+declare global {
+  interface Window {
+    voiceflow?: any;
+  }
+}
+
 import { Link } from "react-router-dom";
 interface PricingSectionProps {
   data: any;
@@ -8,57 +15,96 @@ interface PricingSectionProps {
 }
 
 const PricingSection = ({ data, lang }: PricingSectionProps) => {
-    const [isVisible, setIsVisible] = useState(false);
+  const [isVisible, setIsVisible] = useState(false);
   const sectionRef = useRef<HTMLElement>(null);
   const [isWidgetVisible, setIsWidgetVisible] = useState(false);
+
   useEffect(() => {
-    const widget = document.getElementById("voiceflow-chat");
+    // Close the widget when clicking outside of it
+    const handleClickOutside = (event: any) => {
+      const widget = document.getElementById('voiceflow-chat');
+      if (!widget) return;
 
-    if (widget && widget.shadowRoot) {
-      const chatContainer = widget.shadowRoot.querySelector(".vfrc-widget");
-      const overlay = widget.shadowRoot.querySelector("._1wkq7nf7");
+      const path: any[] = typeof event.composedPath === 'function' ? event.composedPath() : [];
+      const clickedInsideWidget = path.some(
+        (el) => el && (el.id === 'voiceflow-chat' || (el.classList && el.classList.contains('vfrc-chat')))
+      );
 
-      if (chatContainer && overlay) {
-        if (isWidgetVisible) {
-          chatContainer.classList.add("_1wkq7nf1");
-          chatContainer.classList.remove("_1wkq7nf2");
-          overlay.classList.add("_1wkq7nf8");
-        } else {
-          chatContainer.classList.remove("_1wkq7nf1");
-          chatContainer.classList.add("_1wkq7nf2");
-          overlay.classList.remove("_1wkq7nf8");
-        }
+      if (!clickedInsideWidget) {
+        try { window.voiceflow?.chat?.close?.(); } catch {}
+        setIsWidgetVisible(false);
       }
+    };
 
-      // منع إغلاق الويدجت عند الضغط داخلها
-      const handleClickOutside = (event) => {
-        if (!widget.shadowRoot) return;
-
-        // التحقق إذا كان الكليك حصل داخل الـ widget
-        const clickedInsideWidget = event.composedPath().some(
-          (el) => el.classList && el.classList.contains("vfrc-chat")
-        );
-
-        if (!clickedInsideWidget) {
-          setIsWidgetVisible(false);
-        }
-      };
-
-      if (isWidgetVisible) {
-        document.addEventListener("click", handleClickOutside);
-      } else {
-        document.removeEventListener("click", handleClickOutside);
-      }
-
-      return () => document.removeEventListener("click", handleClickOutside);
+    if (isWidgetVisible) {
+      document.addEventListener('click', handleClickOutside);
     }
+    return () => document.removeEventListener('click', handleClickOutside);
   }, [isWidgetVisible]);
 
-  const handleButtonClick = (event) => {
+  const handleButtonClick = async (event: any) => {
     event.stopPropagation();
-    setIsWidgetVisible(!isWidgetVisible);
+
+    // Toggle close if already visible
+    if (isWidgetVisible) {
+      try { window.voiceflow?.chat?.close?.(); } catch {}
+      setIsWidgetVisible(false);
+      return;
+    }
+
+    const config = {
+      verify: { projectID: '68060269b55d846dc89272b5' },
+      url: 'https://general-runtime.voiceflow.com',
+      versionID: 'production',
+      voice: { url: 'https://runtime-api.voiceflow.com' },
+    } as const;
+
+    const openChat = () => {
+      try {
+        window.voiceflow?.chat?.open?.();
+        setIsWidgetVisible(true);
+      } catch {}
+    };
+
+    const ensureScriptLoaded = () => new Promise<void>((resolve) => {
+      if (window.voiceflow && window.voiceflow.chat) return resolve();
+
+      const existing = document.querySelector(
+        'script[src*="cdn.voiceflow.com/widget-next/bundle.mjs"]'
+      ) as HTMLScriptElement | null;
+      if (existing) {
+        existing.addEventListener('load', () => resolve(), { once: true });
+        return;
+      }
+
+      const vfScript = document.createElement('script');
+      vfScript.src = 'https://cdn.voiceflow.com/widget-next/bundle.mjs';
+      vfScript.type = 'module';
+      vfScript.onload = () => resolve();
+      document.body.appendChild(vfScript);
+    });
+
+    await ensureScriptLoaded();
+
+    // Initialize chat once
+    const alreadyInitialized = !!document.getElementById('voiceflow-chat');
+    if (!alreadyInitialized) {
+      try { window.voiceflow.chat.load(config); } catch {}
+      // wait until widget mounts (best-effort)
+      await new Promise<void>((resolve) => {
+        const start = Date.now();
+        const tick = () => {
+          if (document.getElementById('voiceflow-chat')) return resolve();
+          if (Date.now() - start > 3000) return resolve();
+          requestAnimationFrame(tick);
+        };
+        tick();
+      });
+    }
+
+    openChat();
   };
-  
+
   return (
     <motion.section
       initial="hidden"
@@ -98,7 +144,7 @@ const PricingSection = ({ data, lang }: PricingSectionProps) => {
               </span>
             </div>
             <h3 className="text-3xl font-bold text-gray-900 dark:text-mint mb-4 flex items-end gap-2">
-              4,500 <span className="text-lg font-normal text-gray-600 dark:text-white/70">{lang === "ar" ? "ج.م" : "EGP"}</span>
+              8,500 <span className="text-lg font-normal text-gray-600 dark:text-white/70">{lang === "ar" ? "ج.م" : "EGP"}</span>
             </h3>
             <ul className="space-y-4 mb-8">
               <li className="flex items-center gap-2">
@@ -162,7 +208,7 @@ const PricingSection = ({ data, lang }: PricingSectionProps) => {
           <Link to={"/buy-now"}
             className="px-6 py-2 mt-[15px] w-full text-center rounded-[2em] bg-green-300 text-black font-bold shadow transition hover:bg-mint-dark block md:block"
           >
-            {isWidgetVisible ? (lang === "ar" ? "إخفاء الشات" : "Hide chat") : (lang === "ar" ? " اشتري من غير ما تكلم سارة" : "   Buy without talking to Sara")}
+            {isWidgetVisible ? (lang === "ar" ? " اشتري من غير ماتكلم سارة" : "Buy without talking to Sara") : (lang === "ar" ? " اشتري من غير ما تكلم سارة" : "   Buy without talking to Sara")}
           </Link>
           </div>
         </motion.div>
@@ -215,11 +261,3 @@ const PricingSection = ({ data, lang }: PricingSectionProps) => {
 };
 
 export default PricingSection;
-/*
-variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0, transition: { duration: 0.6 } } }}
-          whileHover={{ y: -10, transition: { duration: 0.3 } }}
-          className="bg-white dark:bg-neutral-950 rounded-2xl border border-mint/20 shadow-lg overflow-hidden flex flex-col h-full transform transition-all duration-300 hover:border-mint/50 hover:shadow-xl"
-
-
-
-*/
